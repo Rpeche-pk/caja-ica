@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
  * @license Lrpa, zephyr cygnus
  * @since 28/2/2024
  */
-@JsonRootName("data")
 public record ResponseDto(
         String name,
         String type,

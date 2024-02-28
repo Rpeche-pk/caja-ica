@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class TemplateEntity {
+public abstract class Audit {
     @CreatedDate
     protected LocalDateTime createdDate;
     @LastModifiedDate
