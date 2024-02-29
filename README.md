@@ -98,6 +98,16 @@ VALUES ('Articuno', 'Hielo/Volador', 'Carnívoro', 'Grande', '55.4 kg', 'Legenda
 
 - Crear un usuario ADMINISTRATOR
 ```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    last_modified_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO users (name,password,role,username,last_modified_date,created_date)
 VALUES ('Caja Ica','$2a$12$l1CCnnyXCLn22cPbCXxHpe2oYevSwtd0lKMDH0MYQQfCMdT1vn2su','ADMINISTRATOR','caja-ica',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 ```
