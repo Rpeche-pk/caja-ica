@@ -1,5 +1,6 @@
 package com.lrpa.app.exception;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -20,7 +22,7 @@ import java.util.List;
  * @since 28/2/2024
  */
 @RestControllerAdvice
-public class GlobalHandlerException extends ResponseEntityExceptionHandler {
+public class GlobalHandlerException extends ResponseEntityExceptionHandler{
 
     @Override
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -44,7 +46,7 @@ public class GlobalHandlerException extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})
-    public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+    public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
@@ -52,8 +54,24 @@ public class GlobalHandlerException extends ResponseEntityExceptionHandler {
     public ProblemDetail handleGenericException(GenericException ex, HttpServletRequest request) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problemDetail.setProperty("date", LocalDateTime.now().toString());
-        problemDetail.setInstance(URI.create(request.getRequestURI()).normalize());
+        problemDetail.setInstance(URI.create(request.getRequestURL().toString()));
 
+        return problemDetail;
+    }
+    @ExceptionHandler(value = {TokenExpiredException.class})
+    public ProblemDetail genericExceptionHandler(TokenExpiredException ex) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage()
+        );
+    }
+    @ExceptionHandler(value = {JwtException.class})
+    public ProblemDetail genericJWTException(JwtException jwt, HttpServletRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                jwt.getHttpStatus(), jwt.getLocalizedMessage()
+        );
+        problemDetail.setInstance(URI.create(request.getRequestURL().toString())); //getDescription(false).replace("uri=","")
+        problemDetail.setTitle(jwt.getHttpStatus().getReasonPhrase());
+        problemDetail.setProperty("date", LocalDateTime.now());
         return problemDetail;
     }
 }

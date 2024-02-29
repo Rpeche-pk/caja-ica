@@ -3,14 +3,17 @@ package com.lrpa.app.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.Payload;
 import com.lrpa.app.exception.GenericException;
+import com.lrpa.app.exception.JwtException;
 import com.lrpa.app.persistance.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -77,8 +80,8 @@ public class JwtTokenProvider {
      * @return boolean
      */
     public boolean verifyToken(String token) {
-        if (Objects.isNull(token)) throw new GenericException("El token esta vació");
-        if (isExpirationToken(token)) throw new GenericException("El token ha expirado");
+        if (Objects.isNull(token)) throw new JwtException("El token esta vació",HttpStatus.BAD_REQUEST);
+        if (isExpirationToken(token)) return false;
         JWT.require(getSignatureKey())
                 .withIssuer("caja-ica")
                 .build()
