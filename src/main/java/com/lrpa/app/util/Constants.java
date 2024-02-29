@@ -14,6 +14,9 @@ public final class Constants {
     public static final String API_VERSION = "/v1";
     public static final String API_BASE = "/api";
     public static final String API_POKEMON = API_BASE + API_VERSION + "/pokemon";
+    public static final String API_AUTH = API_BASE + API_VERSION + "/auth";
+
+    public static final String API_LOGIN = "/login";
     public static final String API_POKEMON_NAME = "/name/{name}";
     public static final String API_POKEMON_ID =  "/id/{id}";
 }

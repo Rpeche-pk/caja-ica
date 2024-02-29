@@ -192,7 +192,7 @@ public class PokemonController {
                     )
             }
     )
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<?> createPokemon(@RequestBody @Valid PokeRequestDto requestDto) {
         PokeResponseDto pokeResponseDto = service.createPokemon(requestDto);
         return new ResponseEntity<>(pokeResponseDto, HttpStatus.CREATED);
