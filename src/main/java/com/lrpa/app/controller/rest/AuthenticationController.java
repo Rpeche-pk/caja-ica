@@ -2,6 +2,7 @@ package com.lrpa.app.controller.rest;
 
 import com.lrpa.app.controller.dto.request.AuthenticationRequest;
 import com.lrpa.app.service.usecase.AuthenticationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import static com.lrpa.app.util.Constants.API_LOGIN;
 @RestController
 @RequestMapping(API_AUTH)
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Authentication Controller")
 public class AuthenticationController {
 
     private final AuthenticationService service;
