@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-docker:
-    name: Build and deploy Spring Boot Api
+    name: Build and deploy Spring Boot Api Caja Ica
     runs-on: ubuntu-latest
 
     steps:
