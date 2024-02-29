@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         servers = {
-                @Server(url = "http://localhost:9896/", description = "Local server"),
-                @Server(url = "http://149.50.137.89:9896/", description = "Production server")
+                @Server(url = "http://149.50.137.89:9896/", description = "Production server"),
+                @Server(url = "http://localhost:9896/", description = "Local server")
         }
 )
 @SecurityScheme(

@@ -11,12 +11,12 @@ import com.lrpa.app.persistance.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -71,6 +71,31 @@ public class JwtTokenProvider {
     }
 
     /**
+     * Dicha funcion permite evaluar mediante que algoritmo se hizo, y comparando el issuer
+     *
+     * @param token String
+     * @return boolean
+     */
+    public boolean verifyToken(String token) {
+        if (Objects.isNull(token)) throw new GenericException("El token esta vació");
+        if (isExpirationToken(token)) throw new GenericException("El token ha expirado");
+        JWT.require(getSignatureKey())
+                .withIssuer("caja-ica")
+                .build()
+                .verify(token);
+        return true;
+    }
+
+    private boolean isExpirationToken(String token) {
+        Instant extractExpiration = extractExpiration(token);
+        return extractExpiration.isBefore(Instant.now());
+    }
+
+    private Instant extractExpiration(String token) {
+        return extractAllClaims(token, Payload::getExpiresAtAsInstant);
+    }
+
+    /**
      * Toma el token se extrae los claims que lo conforman y se pasa un key para traer informacion especifica del token
      *
      * @param token String
@@ -102,6 +127,7 @@ public class JwtTokenProvider {
             throw new GenericException(ex.getLocalizedMessage());
         }
     }
+
     /**
      * @return Algoritmo para la firma del token, el token se conforma en 3 partes
      */

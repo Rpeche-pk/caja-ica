@@ -98,7 +98,7 @@ VALUES ('Articuno', 'Hielo/Volador', 'Carnívoro', 'Grande', '55.4 kg', 'Legenda
 
 - Crear un usuario ADMINISTRATOR
 ```sql
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     password VARCHAR(100) NOT NULL,
@@ -129,3 +129,10 @@ mvn clean install
 ```bash
 mvn spring-boot:run
 ```
+
+### Despliegue
+La api esta desplegado en don web, puedes acceder a la documentación de la api en el siguiente enlace:
+
+[Swagger API](http://149.50.137.89:9896/swagger-ui/index.html)
+
+[DOCUMENTATION API](https://bump.sh/maipevi/doc/cajaica) <- Click para ver la documentación

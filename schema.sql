@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS Pokemon (
+CREATE TABLE IF NOT EXISTS pokemon (
     id SMALLSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
@@ -11,6 +11,19 @@ CREATE TABLE IF NOT EXISTS Pokemon (
     last_modified_date timestamp not null default current_timestamp,
     created_date timestamp not null default current_timestamp
 );
+
+CREATE TABLE IF NOT EXISTS users (
+   id SERIAL PRIMARY KEY,
+   name VARCHAR(255) NOT NULL,
+   password VARCHAR(100) NOT NULL,
+   role VARCHAR(50) NOT NULL,
+   username VARCHAR(50) UNIQUE NOT NULL,
+   last_modified_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (name,password,role,username,last_modified_date,created_date)
+VALUES ('Caja Ica','$2a$12$l1CCnnyXCLn22cPbCXxHpe2oYevSwtd0lKMDH0MYQQfCMdT1vn2su','ADMINISTRATOR','caja-ica',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 
 INSERT INTO pokemon (name, type, feeding, size, weight, rarity, fun_fact,enabled)
 VALUES ('Pikachu', 'Eléctrico', 'Omnívoro', 'Pequeño', '6.0 kg', 'Común', 'Siempre tiene energía estática en su cuerpo',TRUE);
